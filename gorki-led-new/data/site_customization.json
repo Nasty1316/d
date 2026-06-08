@@ -1,0 +1,230 @@
+{
+    "version": 1,
+    "updated_at": "2026-06-04T22:20:34+02:00",
+    "theme": {
+        "primaryColor": "#255aeb",
+        "secondaryColor": "#1e40af",
+        "accentColor": "#fbbf24",
+        "textDark": "#1f2937",
+        "heroGradient": "linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%)",
+        "fontFamily": "Inter, sans-serif",
+        "customCss": ""
+    },
+    "sections": {
+        "home": true,
+        "about": true,
+        "services": true,
+        "facilities": true,
+        "news": true,
+        "safety": true,
+        "visitor": true,
+        "gallery": true,
+        "contacts": true
+    },
+    "nav": {
+        "home": true,
+        "about": true,
+        "services": true,
+        "facilities": true,
+        "news": true,
+        "visitor": true,
+        "gallery": true,
+        "contacts": true
+    },
+    "textOverrides": {
+        "ru": [],
+        "en": [],
+        "be": []
+    },
+    "seo": {
+        "ru": {
+            "page-title": "",
+            "seo-description": ""
+        },
+        "en": {
+            "page-title": "",
+            "seo-description": ""
+        },
+        "be": {
+            "page-title": "",
+            "seo-description": ""
+        }
+    },
+    "contacts": {
+        "blocks": []
+    },
+    "footer": {
+        "copyright": {
+            "ru": "",
+            "en": "",
+            "be": ""
+        }
+    },
+    "hero": {
+        "showFloatingCards": true,
+        "overlayOpacity": 0.4
+    },
+    "content": {
+        "news": [],
+        "about": null,
+        "prices": [
+            {
+                "key": "monthly",
+                "name": "Абонемент на месяц",
+                "price": "50 руб.",
+                "description": "Посещение всех секций"
+            },
+            {
+                "key": "individual",
+                "name": "Индивидуальное занятие",
+                "price": "15 руб.",
+                "description": "1 час с тренером"
+            },
+            {
+                "key": "group",
+                "name": "Групповое занятие",
+                "price": "8 руб.",
+                "description": "1 час в группе"
+            }
+        ],
+        "contacts": null
+    },
+    "schedule": {
+        "note": "Ориентировочное расписание. Точное время массового катания, аренды и секций уточняйте по телефону справки: 8 (02233) 7-30-11.",
+        "featured": {
+            "title": "МАССОВОЕ КАТАНИЕ 2026",
+            "period": "Февраль 2026",
+            "sessions": [
+                {
+                    "label": "24–27 февраля",
+                    "time": "20:00"
+                },
+                {
+                    "label": "28 февраля",
+                    "time": "16:00; 18:00"
+                },
+                {
+                    "label": "1 марта",
+                    "time": "18:30"
+                }
+            ],
+            "highlight": "Бесплатное использование беговых дорожек на стадионе ежедневно с 7:00 до 9:00",
+            "phone": "7-30-11",
+            "phoneTel": "+375223373011"
+        },
+        "days": [
+            {
+                "label": "Пн",
+                "labelFull": "Понедельник",
+                "items": [
+                    {
+                        "time": "17:00–20:00",
+                        "title": "Массовое катание",
+                        "place": "Ледовая арена"
+                    },
+                    {
+                        "time": "08:00–16:00",
+                        "title": "Учебно-тренировочный процесс ДЮСШ",
+                        "place": "Объекты школы"
+                    }
+                ]
+            },
+            {
+                "label": "Вт",
+                "labelFull": "Вторник",
+                "items": [
+                    {
+                        "time": "17:00–20:00",
+                        "title": "Массовое катание",
+                        "place": "Ледовая арена"
+                    },
+                    {
+                        "time": "08:00–16:00",
+                        "title": "Учебно-тренировочный процесс ДЮСШ",
+                        "place": "Объекты школы"
+                    }
+                ]
+            },
+            {
+                "label": "Ср",
+                "labelFull": "Среда",
+                "items": [
+                    {
+                        "time": "17:00–20:00",
+                        "title": "Массовое катание",
+                        "place": "Ледовая арена"
+                    },
+                    {
+                        "time": "08:00–16:00",
+                        "title": "Учебно-тренировочный процесс ДЮСШ",
+                        "place": "Объекты школы"
+                    }
+                ]
+            },
+            {
+                "label": "Чт",
+                "labelFull": "Четверг",
+                "items": [
+                    {
+                        "time": "17:00–20:00",
+                        "title": "Массовое катание",
+                        "place": "Ледовая арена"
+                    },
+                    {
+                        "time": "08:00–16:00",
+                        "title": "Учебно-тренировочный процесс ДЮСШ",
+                        "place": "Объекты школы"
+                    }
+                ]
+            },
+            {
+                "label": "Пт",
+                "labelFull": "Пятница",
+                "items": [
+                    {
+                        "time": "17:00–21:00",
+                        "title": "Массовое катание",
+                        "place": "Ледовая арена"
+                    },
+                    {
+                        "time": "08:00–16:00",
+                        "title": "Учебно-тренировочный процесс ДЮСШ",
+                        "place": "Объекты школы"
+                    }
+                ]
+            },
+            {
+                "label": "Сб",
+                "labelFull": "Суббота",
+                "items": [
+                    {
+                        "time": "10:00–14:00",
+                        "title": "Массовое катание (выходной день)",
+                        "place": "Ледовая арена"
+                    },
+                    {
+                        "time": "15:00–18:00",
+                        "title": "Соревнования \/ аренда по графику",
+                        "place": "Уточнять в приёмной"
+                    }
+                ]
+            },
+            {
+                "label": "Вс",
+                "labelFull": "Воскресенье",
+                "items": [
+                    {
+                        "time": "10:00–14:00",
+                        "title": "Массовое катание (выходной день)",
+                        "place": "Ледовая арена"
+                    },
+                    {
+                        "time": "15:00–18:00",
+                        "title": "Соревнования \/ аренда по графику",
+                        "place": "Уточнять в приёмной"
+                    }
+                ]
+            }
+        ]
+    }
+}

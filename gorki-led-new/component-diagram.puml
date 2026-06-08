@@ -1,0 +1,85 @@
+@startuml
+skinparam componentStyle uml2
+skinparam component {
+    BackgroundColor<<Frontend>> LightBlue
+    BackgroundColor<<Backend>> LightGreen
+    BackgroundColor<<Database>> LightYellow
+    BackgroundColor<<Storage>> LightCoral
+}
+
+title "Диаграмма компонентов системы"
+
+package "Frontend" {
+    [index.html] as IndexHTML <<Frontend>>
+    [style.css] as StyleCSS <<Frontend>>
+    [script.js] as ScriptJS <<Frontend>>
+    [translations.js] as TranslationsJS <<Frontend>>
+    [translations-content.js] as TranslationsContentJS <<Frontend>>
+}
+
+package "Backend" {
+    [api.php] as API <<Backend>>
+    [get_schedule.php] as GetSchedule <<Backend>>
+    [submit_booking.php] as SubmitBooking <<Backend>>
+    [submit_feedback.php] as SubmitFeedback <<Backend>>
+    [upload.php] as Upload <<Backend>>
+    [get_db_data.php] as GetDBData <<Backend>>
+    [get_images.php] as GetImages <<Backend>>
+    [backup.php] as Backup <<Backend>>
+    [init_db.php] as InitDB <<Backend>>
+}
+
+package "Admin" {
+    [admin/] as AdminPanel <<Frontend>>
+}
+
+database "database.sqlite" as DB <<Database>>
+
+file "data/" as DataDir <<Storage>>
+file "images/" as ImagesDir <<Storage>>
+file "backups/" as BackupsDir <<Storage>>
+
+' Связи между компонентами
+IndexHTML ..> StyleCSS : использует
+IndexHTML ..> ScriptJS : использует
+IndexHTML ..> TranslationsJS : использует
+IndexHTML ..> TranslationsContentJS : использует
+
+ScriptJS ..> API : HTTP запросы
+ScriptJS ..> GetSchedule : HTTP запросы
+ScriptJS ..> SubmitBooking : HTTP запросы
+ScriptJS ..> SubmitFeedback : HTTP запросы
+ScriptJS ..> Upload : HTTP запросы
+ScriptJS ..> GetDBData : HTTP запросы
+ScriptJS ..> GetImages : HTTP запросы
+
+API ..> DB : читает/записывает
+GetSchedule ..> DataDir : читает
+SubmitBooking ..> DB : записывает
+SubmitFeedback ..> DB : записывает
+Upload ..> ImagesDir : сохраняет
+GetDBData ..> DB : читает
+GetImages ..> ImagesDir : читает
+Backup ..> DB : читает
+Backup ..> BackupsDir : сохраняет
+InitDB ..> DB : инициализирует
+
+AdminPanel ..> API : HTTP запросы
+AdminPanel ..> Backup : HTTP запросы
+
+note right of API
+  Основной API endpoint
+  для обработки запросов
+end note
+
+note right of DB
+  SQLite база данных
+  для хранения данных
+end note
+
+note right of DataDir
+  Директория для
+  данных расписания
+end note
+
+@enduml

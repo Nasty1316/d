@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Административная панель</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="auth.js" onerror="window.__authJsMissing=true"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+            min-height: 600px;
+            display: flex;
+            margin: 2rem;
+        }
+        .login-left {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+        }
+        .login-left h2 { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
+        .login-left p { font-size: 1rem; opacity: 0.9; margin-bottom: 2rem; }
+        .login-right { padding: 3rem; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .login-header { text-align: center; margin-bottom: 2rem; }
+        .login-logo { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; }
+        .login-logo i { font-size: 2rem; color: #2563eb; }
+        .login-logo h3 { font-size: 1.5rem; font-weight: 700; color: #1e293b; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.875rem; }
+        .form-group input {
+            width: 100%; padding: 0.75rem 1rem; border: 1px solid #e2e8f0;
+            border-radius: 8px; font-size: 0.875rem;
+        }
+        .form-group input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        .login-btn {
+            width: 100%; padding: 0.75rem; background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white; border: none; border-radius: 8px; font-weight: 500; cursor: pointer;
+        }
+        .login-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+        .error-message, .success-message {
+            padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.875rem; margin-bottom: 1rem; display: none;
+        }
+        .error-message { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; }
+        .success-message { background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a; }
+        .demo-info {
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+            padding: 1rem; margin-top: 1rem; font-size: 0.8rem; color: #64748b;
+        }
+        .demo-info code { background: #e2e8f0; padding: 0.1rem 0.35rem; border-radius: 4px; }
+        @media (max-width: 768px) {
+            .login-container { flex-direction: column; max-width: 400px; }
+            .login-left { padding: 2rem; }
+            .login-right { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-left">
+            <h2>Добро пожаловать!</h2>
+            <p>Система управления сайтом Горецкой ДЮСШ</p>
+        </div>
+        <div class="login-right">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-hockey-sticks"></i>
+                    <h3>Админ-панель</h3>
+                </div>
+                <p style="color:#64748b;font-size:0.875rem">Войдите в систему управления</p>
+            </div>
+            <div class="error-message" id="error-message"></div>
+            <div class="success-message" id="success-message"></div>
+            <form class="login-form" id="login-form" action="#" novalidate>
+                <div class="form-group">
+                    <label for="username">Имя пользователя</label>
+                    <input type="text" id="username" name="username" required autocomplete="username" value="admin">
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="login-btn" id="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Войти
+                </button>
+            </form>
+            <div class="demo-info">
+                <strong>Данные для входа:</strong> логин <code>admin</code>, пароль <code>admin123</code><br><br>
+                <strong>Рекомендуется:</strong> запустите <code>start_local_server.bat</code> и откройте
+                <code>http://localhost:8000/admin/login.html</code>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            const form = document.getElementById('login-form');
+            const btn = document.getElementById('login-btn');
+            const errEl = document.getElementById('error-message');
+            const okEl = document.getElementById('success-message');
+
+            function showError(message) {
+                errEl.textContent = message;
+                errEl.style.display = 'block';
+                okEl.style.display = 'none';
+            }
+
+            if (window.__authJsMissing) {
+                showError('Не найден auth.js. Запустите start_local_server.bat и откройте http://localhost:8000/admin/login.html');
+                form.setAttribute('action', 'login.php');
+                form.setAttribute('method', 'post');
+                return;
+            }
+
+            if (new URLSearchParams(window.location.search).get('error') === '1') {
+                showError('Неверный логин или пароль (вход через сервер)');
+            }
+
+            if (typeof GorkiAdminAuth !== 'undefined' && GorkiAdminAuth.isLoggedIn()) {
+                window.location.replace('index.html');
+                return;
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (typeof GorkiAdminAuth === 'undefined') {
+                    showError('Не загружен auth.js. Проверьте, что файл admin/auth.js на месте.');
+                    return;
+                }
+                btn.disabled = true;
+                const result = GorkiAdminAuth.login(
+                    document.getElementById('username').value,
+                    document.getElementById('password').value
+                );
+                if (result.ok) {
+                    okEl.textContent = 'Вход выполнен, переход…';
+                    okEl.style.display = 'block';
+                    errEl.style.display = 'none';
+                    window.location.href = 'index.html';
+                    return;
+                }
+                showError(result.error || 'Ошибка входа');
+                btn.disabled = false;
+            });
+        })();
+    </script>
+</body>
+</html>

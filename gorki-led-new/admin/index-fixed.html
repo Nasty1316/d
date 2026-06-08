@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Административная панель - Горецкая ДЮСШ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .admin-container {
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(15, 23, 42, 0.18);
+            backdrop-filter: blur(6px);
+            padding: 3rem;
+            max-width: 1080px;
+            width: min(1080px, 100%);
+            text-align: left;
+        }
+
+        .admin-header {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 1.25rem;
+        }
+
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .admin-logo i {
+            font-size: 3rem;
+            color: #2563eb;
+        }
+
+        .admin-logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .admin-subtitle {
+            color: #64748b;
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+
+        .admin-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .admin-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
+        }
+
+        .admin-btn.secondary {
+            background: #64748b;
+        }
+
+        .admin-btn.secondary:hover {
+            box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);
+        }
+
+        .admin-status {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.75rem 0 0.25rem;
+        }
+
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #0f766e;
+            background: #ccfbf1;
+            border: 1px solid #99f6e4;
+            border-radius: 999px;
+            padding: 0.3rem 0.65rem;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Стили для модального окна */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: #1e293b;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: #64748b;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            background: #f8fafc;
+        }
+
+        .modal-body label {
+            display: block !important;
+            margin-bottom: 0.5rem !important;
+            font-weight: 600 !important;
+            color: #334155 !important;
+            font-size: 0.9rem;
+        }
+
+        .modal-body input[type="text"],
+        .modal-body textarea,
+        .modal-body select {
+            width: 100% !important;
+            padding: 0.65rem 0.75rem !important;
+            border: 1px solid #cbd5e1 !important;
+            border-radius: 8px !important;
+            font: inherit;
+        }
+
+        .modal-body input[type="text"]:focus,
+        .modal-body textarea:focus,
+        .modal-body select:focus {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
+            outline: none;
+        }
+
+        .modal-footer {
+            flex-wrap: wrap;
+        }
+
+        .modal-footer .admin-btn {
+            min-width: 170px;
+        }
+
+        .debug-section {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .debug-section h4 {
+            color: #0ea5e9;
+            margin-bottom: 0.5rem;
+        }
+
+        .debug-output {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-family: monospace;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                padding: 2rem;
+                margin: 0.5rem;
+            }
+            
+            .admin-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 96%;
+                max-height: 94vh;
+            }
+
+            .modal-header,
+            .modal-body,
+            .modal-footer {
+                padding: 1rem;
+            }
+
+            .modal-footer .admin-btn {
+                min-width: 0;
+                flex: 1;
+            }
+        }
+
+        /* ===== Полный редизайн: светлая тема ===== */
+        :root {
+            --bg-main: #f3f6fb;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --border: #dbe6f2;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 0%, #e9f1ff 0%, var(--bg-main) 45%, #edf2f8 100%) !important;
+            color: var(--text-main);
+            align-items: flex-start !important;
+        }
+
+        .logout-btn {
+            background: var(--surface) !important;
+            color: #1e40af !important;
+            border: 1px solid #bfdbfe !important;
+        }
+
+        .admin-container {
+            margin-top: 3.5rem;
+            background: var(--surface) !important;
+            border: 1px solid var(--border) !important;
+            box-shadow: 0 24px 50px rgba(15, 23, 42, 0.1) !important;
+        }
+
+        .admin-header {
+            background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 1.25rem 1.25rem 1rem;
+            border: 1px solid #e4edf8;
+        }
+
+        .admin-logo i {
+            width: 54px;
+            height: 54px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            font-size: 1.7rem !important;
+            color: #2563eb !important;
+            background: #dbeafe;
+        }
+
+        .admin-logo h1 {
+            font-size: 1.75rem !important;
+            letter-spacing: -0.02em;
+        }
+
+        .admin-subtitle {
+            color: var(--text-muted) !important;
+            font-size: 0.95rem !important;
+        }
+
+        .admin-btn {
+            background: linear-gradient(135deg, var(--primary), #1e40af) !important;
+            border: 1px solid transparent !important;
+            border-radius: 10px !important;
+            font-weight: 600 !important;
+        }
+
+        .admin-btn:hover {
+            background: linear-gradient(135deg, var(--primary-hover), #1e3a8a) !important;
+            box-shadow: 0 10px 16px rgba(37, 99, 235, 0.22) !important;
+            transform: translateY(-1px) !important;
+        }
+
+        .admin-btn.secondary {
+            background: #eef2f7 !important;
+            color: #334155 !important;
+            border-color: #d8e1ec !important;
+        }
+
+        .admin-info {
+            background: linear-gradient(180deg, #f7fbff 0%, #f9fffc 100%) !important;
+            border: 1px solid #cfe7da !important;
+        }
+
+        .status-chip {
+            background: #e6f7ef !important;
+            border-color: #b7ebd0 !important;
+            color: #166534 !important;
+        }
+
+        .modal {
+            background: rgba(15, 23, 42, 0.35) !important;
+            backdrop-filter: blur(7px) !important;
+        }
+
+        .modal-content {
+            border: 1px solid #dbe7f5;
+            background: #ffffff !important;
+            border-radius: 18px !important;
+            box-shadow: 0 28px 70px rgba(15, 23, 42, 0.2) !important;
+        }
+
+        .modal-header {
+            background: linear-gradient(180deg, #f8fbff 0%, #f3f8ff 100%) !important;
+            border-bottom-color: #dce7f4 !important;
+        }
+
+        .modal-header h3 {
+            color: #1e3a8a !important;
+            font-weight: 700 !important;
+        }
+
+        .modal-body {
+            background: #fbfdff;
+        }
+
+        .modal-footer {
+            background: #f7faff !important;
+            border-top-color: #dde8f4 !important;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="logout-btn">
+        <i class="fas fa-arrow-left"></i>
+        На сайт
+    </a>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <div class="admin-logo">
+                <i class="fas fa-hockey-sticks"></i>
+                <h1>Административная панель</h1>
+            </div>
+            <p class="admin-subtitle">Система управления сайтом Горецкой ДЮСШ</p>
+            <div class="admin-status">
+                <span class="status-chip"><i class="fas fa-shield-alt"></i> Режим администратора</span>
+                <span class="status-chip"><i class="fas fa-check-circle"></i> Панель активна</span>
+            </div>
+        </div>
+
+        <div class="admin-actions">
+            <button class="admin-btn" onclick="openNewsModal()">
+                <i class="fas fa-newspaper"></i>
+                Управление новостями
+            </button>
+            <button class="admin-btn" onclick="openAboutModal()">
+                <i class="fas fa-info-circle"></i>
+                О нас
+            </button>
+            <button class="admin-btn" onclick="openGalleryModal()">
+                <i class="fas fa-images"></i>
+                Галерея
+            </button>
+            <button class="admin-btn" onclick="openPricesModal()">
+                <i class="fas fa-dollar-sign"></i>
+                Цены
+            </button>
+            <button class="admin-btn" onclick="openContactsModal()">
+                <i class="fas fa-address-book"></i>
+                Контакты
+            </button>
+        </div>
+
+        <div class="debug-section">
+            <h4>🔧 Диагностика</h4>
+            <button class="admin-btn" onclick="testAllFunctions()">Проверить все функции</button>
+            <div id="debug-output" class="debug-output"></div>
+        </div>
+
+        <div class="admin-info">
+            <h4>🎉 Добро пожаловать в административную панель!</h4>
+            <p>
+                Вы успешно вошли в систему управления сайтом. Здесь вы можете управлять контентом, 
+                загружать фотографии, обновлять цены и редактировать контактную информацию.
+            </p>
+            <p>
+                <strong>Текущий пользователь:</strong> Администратор<br>
+                <strong>Время входа:</strong> <span id="login-time"></span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Модальное окно новостей -->
+    <div id="newsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-newspaper"></i> Управление новостями</h3>
+                <button class="modal-close" onclick="closeNewsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <h4>Добавить новость</h4>
+                <form id="newsForm">
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Заголовок</label>
+                        <input type="text" id="newsTitle" style="width: 100%; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 4px;" required>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Содержание</label>
+                        <textarea id="newsContent" rows="4" style="width: 100%; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 4px; resize: vertical;" required></textarea>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Краткое описание</label>
+                        <input type="text" id="newsExcerpt" style="width: 100%; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 4px;">
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="submit" class="admin-btn">
+                            <i class="fas fa-plus"></i>
+                            Добавить новость
+                        </button>
+                    </div>
+                </form>
+                
+                <div style="margin-top: 2rem;">
+                    <h4>Существующие новости</h4>
+                    <div id="newsList" style="max-height: 300px; overflow-y: auto;">
+                        <p style="text-align: center; color: #64748b; padding: 2rem;">Новостей пока нет</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="admin-btn secondary" onclick="closeNewsModal()">
+                    <i class="fas fa-times"></i>
+                    Закрыть
+                </button>
+                <button class="admin-btn" onclick="saveAllNews()">
+                    <i class="fas fa-save"></i>
+                    Сохранить изменения
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно "О нас" -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-info-circle"></i> Управление разделом "О нас"</h3>
+                <button class="modal-close" onclick="closeAboutModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <h4>Редактирование информации о спортивной школе</h4>
+                <form id="aboutForm">
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Заголовок раздела</label>
+                        <input type="text" id="aboutTitle" style="width: 100%; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 4px;" required>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Подзаголовок</label>
+                        <input type="text" id="aboutSubtitle" style="width: 100%; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 4px;" required>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Основное описание</label>
+                        <textarea id="aboutDescription" rows="4" style="width: 100%; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 4px; resize: vertical;" required></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="submit" class="admin-btn">
+                            <i class="fas fa-save"></i>
+                            Сохранить изменения
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="admin-btn secondary" onclick="closeAboutModal()">
+                    <i class="fas fa-times"></i>
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно галереи -->
+    <div id="galleryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-images"></i> Управление галереей</h3>
+                <button class="modal-close" onclick="closeGalleryModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <p>Функционал галереи в разработке...</p>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="admin-btn secondary" onclick="closeGalleryModal()">
+                    <i class="fas fa-times"></i>
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно цен -->
+    <div id="pricesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-dollar-sign"></i> Управление ценами</h3>
+                <button class="modal-close" onclick="closePricesModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <p>Функционал цен в разработке...</p>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="admin-btn secondary" onclick="closePricesModal()">
+                    <i class="fas fa-times"></i>
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно контактов -->
+    <div id="contactsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-address-book"></i> Управление контактами</h3>
+                <button class="modal-close" onclick="closeContactsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <p>Функционал контактов в разработке...</p>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="admin-btn secondary" onclick="closeContactsModal()">
+                    <i class="fas fa-times"></i>
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Глобальные переменные
+        let newsItems = [];
+        let aboutData = {};
+
+        // Функция для вывода отладочной информации
+        function debug(message) {
+            console.log('[DEBUG]', message);
+            const output = document.getElementById('debug-output');
+            if (output) {
+                output.innerHTML += '<div>' + new Date().toLocaleTimeString() + ': ' + message + '</div>';
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+
+        // Проверка аутентификации
+        function checkAuth() {
+            const token = sessionStorage.getItem('adminToken');
+            if (token !== 'demo-token') {
+                debug('Токен не найден или недействителен, перенаправляем на вход');
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Установка времени входа
+        function setLoginTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            const timeElement = document.getElementById('login-time');
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+
+        // Управление новостями
+        function openNewsModal() {
+            debug('openNewsModal вызвана');
+            const modal = document.getElementById('newsModal');
+            if (modal) {
+                modal.classList.add('active');
+                loadNewsFromStorage();
+                renderNews();
+                debug('Модальное окно новостей открыто');
+            } else {
+                debug('ОШИБКА: Модальное окно новостей не найдено');
+            }
+        }
+
+        function closeNewsModal() {
+            debug('closeNewsModal вызвана');
+            const modal = document.getElementById('newsModal');
+            if (modal) {
+                modal.classList.remove('active');
+                debug('Модальное окно новостей закрыто');
+            }
+        }
+
+        function loadNewsFromStorage() {
+            const stored = localStorage.getItem('gorkiNews');
+            if (stored) {
+                newsItems = JSON.parse(stored);
+            }
+            debug('Загружено новостей: ' + newsItems.length);
+        }
+
+        function saveNewsToStorage() {
+            localStorage.setItem('gorkiNews', JSON.stringify(newsItems));
+            debug('Новости сохранены в localStorage');
+        }
+
+        function renderNews() {
+            const newsList = document.getElementById('newsList');
+            if (!newsList) return;
+            
+            if (newsItems.length === 0) {
+                newsList.innerHTML = '<p style="text-align: center; color: #64748b; padding: 2rem;">Новостей пока нет</p>';
+                return;
+            }
+
+            newsList.innerHTML = newsItems.map((news, index) => `
+                <div style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                    <h5 style="margin: 0 0 0.5rem 0; color: #1e293b;">${news.title}</h5>
+                    <p style="margin: 0 0 0.5rem 0; color: #64748b; font-size: 0.875rem;">${news.excerpt || 'Нет описания'}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <small style="color: #94a3b8;">${new Date(news.createdAt).toLocaleString('ru-RU')}</small>
+                        <button class="admin-btn secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="deleteNews(${index})">
+                            <i class="fas fa-trash"></i>
+                            Удалить
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteNews(index) {
+            if (confirm('Удалить эту новость?')) {
+                newsItems.splice(index, 1);
+                renderNews();
+                debug('Новость удалена');
+            }
+        }
+
+        function saveAllNews() {
+            saveNewsToStorage();
+            alert('Новости успешно сохранены!');
+            closeNewsModal();
+        }
+
+        // Управление разделом "О нас"
+        function openAboutModal() {
+            debug('openAboutModal вызвана');
+            const modal = document.getElementById('aboutModal');
+            if (modal) {
+                modal.classList.add('active');
+                loadAboutFromStorage();
+                populateAboutForm();
+                debug('Модальное окно "О нас" открыто');
+            } else {
+                debug('ОШИБКА: Модальное окно "О нас" не найдено');
+            }
+        }
+
+        function closeAboutModal() {
+            debug('closeAboutModal вызвана');
+            const modal = document.getElementById('aboutModal');
+            if (modal) {
+                modal.classList.remove('active');
+                debug('Модальное окно "О нас" закрыто');
+            }
+        }
+
+        function loadAboutFromStorage() {
+            const stored = localStorage.getItem('gorkiAbout');
+            if (stored) {
+                aboutData = JSON.parse(stored);
+            } else {
+                aboutData = {
+                    title: 'О нашей спортивной школе',
+                    subtitle: 'Лидер в развитии детского и юношеского спорта в регионе',
+                    description: 'Государственное учебно-спортивное учреждение "Горецкая детско-юношеская спортивная школа" - это современный спортивный комплекс, предоставляющий возможности для занятия различными видами спорта для детей и молодежи.'
+                };
+            }
+            debug('Данные "О нас" загружены');
+        }
+
+        function saveAboutToStorage() {
+            localStorage.setItem('gorkiAbout', JSON.stringify(aboutData));
+            debug('Данные "О нас" сохранены');
+        }
+
+        function populateAboutForm() {
+            const titleInput = document.getElementById('aboutTitle');
+            const subtitleInput = document.getElementById('aboutSubtitle');
+            const descriptionInput = document.getElementById('aboutDescription');
+            
+            if (titleInput) titleInput.value = aboutData.title || '';
+            if (subtitleInput) subtitleInput.value = aboutData.subtitle || '';
+            if (descriptionInput) descriptionInput.value = aboutData.description || '';
+            
+            debug('Форма "О нас" заполнена');
+        }
+
+        function saveAboutData() {
+            aboutData = {
+                title: document.getElementById('aboutTitle').value,
+                subtitle: document.getElementById('aboutSubtitle').value,
+                description: document.getElementById('aboutDescription').value,
+                updatedAt: new Date().toISOString()
+            };
+            
+            saveAboutToStorage();
+            alert('Информация о спортивной школе успешно сохранена!');
+            closeAboutModal();
+        }
+
+        // Управление галереей
+        function openGalleryModal() {
+            debug('openGalleryModal вызвана');
+            const modal = document.getElementById('galleryModal');
+            if (modal) {
+                modal.classList.add('active');
+                debug('Модальное окно галереи открыто');
+            }
+        }
+
+        function closeGalleryModal() {
+            debug('closeGalleryModal вызвана');
+            const modal = document.getElementById('galleryModal');
+            if (modal) {
+                modal.classList.remove('active');
+                debug('Модальное окно галереи закрыто');
+            }
+        }
+
+        // Управление ценами
+        function openPricesModal() {
+            debug('openPricesModal вызвана');
+            const modal = document.getElementById('pricesModal');
+            if (modal) {
+                modal.classList.add('active');
+                debug('Модальное окно цен открыто');
+            }
+        }
+
+        function closePricesModal() {
+            debug('closePricesModal вызвана');
+            const modal = document.getElementById('pricesModal');
+            if (modal) {
+                modal.classList.remove('active');
+                debug('Модальное окно цен закрыто');
+            }
+        }
+
+        // Управление контактами
+        function openContactsModal() {
+            debug('openContactsModal вызвана');
+            const modal = document.getElementById('contactsModal');
+            if (modal) {
+                modal.classList.add('active');
+                debug('Модальное окно контактов открыто');
+            }
+        }
+
+        function closeContactsModal() {
+            debug('closeContactsModal вызвана');
+            const modal = document.getElementById('contactsModal');
+            if (modal) {
+                modal.classList.remove('active');
+                debug('Модальное окно контактов закрыто');
+            }
+        }
+
+        // Тестовая функция
+        function testAllFunctions() {
+            debug('=== Тест всех функций ===');
+            debug('openNewsModal: ' + typeof openNewsModal);
+            debug('openAboutModal: ' + typeof openAboutModal);
+            debug('openGalleryModal: ' + typeof openGalleryModal);
+            debug('openPricesModal: ' + typeof openPricesModal);
+            debug('openContactsModal: ' + typeof openContactsModal);
+            
+            // Проверяем наличие модальных окон
+            debug('newsModal: ' + (document.getElementById('newsModal') ? 'Найдено' : 'Не найдено'));
+            debug('aboutModal: ' + (document.getElementById('aboutModal') ? 'Найдено' : 'Не найдено'));
+            debug('galleryModal: ' + (document.getElementById('galleryModal') ? 'Найдено' : 'Не найдено'));
+            debug('pricesModal: ' + (document.getElementById('pricesModal') ? 'Найдено' : 'Не найдено'));
+            debug('contactsModal: ' + (document.getElementById('contactsModal') ? 'Найдено' : 'Не найдено'));
+        }
+
+        // Закрытие модальных окон по клику на фон
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+
+        // Закрытие модальных окон по Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modals = document.querySelectorAll('.modal.active');
+                modals.forEach(modal => modal.classList.remove('active'));
+            }
+        });
+
+        // Обработка форм
+        document.addEventListener('DOMContentLoaded', function() {
+            debug('=== ЗАГРУЗКА СТРАНИЦЫ ===');
+            
+            if (checkAuth()) {
+                debug('Аутентификация пройдена');
+                setLoginTime();
+                
+                // Обновление времени каждую минуту
+                setInterval(setLoginTime, 60000);
+                
+                // Обработка формы новостей
+                const newsForm = document.getElementById('newsForm');
+                if (newsForm) {
+                    newsForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        
+                        const title = document.getElementById('newsTitle').value;
+                        const content = document.getElementById('newsContent').value;
+                        const excerpt = document.getElementById('newsExcerpt').value;
+                        
+                        if (title && content) {
+                            const newsItem = {
+                                title,
+                                content,
+                                excerpt: excerpt || content.substring(0, 100) + '...',
+                                createdAt: new Date().toISOString()
+                            };
+                            
+                            newsItems.unshift(newsItem);
+                            renderNews();
+                            newsForm.reset();
+                            
+                            debug('Новость добавлена: ' + title);
+                        }
+                    });
+                }
+                
+                // Обработка формы "О нас"
+                const aboutForm = document.getElementById('aboutForm');
+                if (aboutForm) {
+                    aboutForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        saveAboutData();
+                    });
+                }
+                
+                debug('=== ИНИЦИАЛИЗАЦИЯ ЗАВЕРШЕНА ===');
+            } else {
+                debug('Аутентификация не пройдена');
+            }
+        });
+
+        // Делаем функции глобальными для доступа из onclick
+        window.openNewsModal = openNewsModal;
+        window.openAboutModal = openAboutModal;
+        window.openGalleryModal = openGalleryModal;
+        window.openPricesModal = openPricesModal;
+        window.openContactsModal = openContactsModal;
+        window.testAllFunctions = testAllFunctions;
+        window.deleteNews = deleteNews;
+        window.saveAllNews = saveAllNews;
+        window.saveAboutData = saveAboutData;
+        
+        debug('Скрипт загружен, функции сделаны глобальными');
+    </script>
+</body>
+</html>

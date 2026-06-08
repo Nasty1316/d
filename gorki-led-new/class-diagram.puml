@@ -1,0 +1,148 @@
+@startuml Class Diagram - Горецкая ДЮСШ
+
+skinparam classAttributeBackgroundColor #F5F5F5
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #333333
+skinparam linkColor #333333
+hide circle
+
+package "Backend (PHP)" {
+    
+    class Database <<Singleton>> {
+        - static $instance : Database
+        - $pdo : PDO
+        - $dbPath : string
+        --
+        - __construct()
+        - connect()
+        - createDatabase()
+        + static getInstance() : Database
+        + query(sql : string, params : array) : PDOStatement
+        + fetch(sql : string, params : array) : array
+        + fetchAll(sql : string, params : array) : array
+        + findById(table : string, id : int, columns : string) : array
+        + insert(table : string, data : array) : int
+        + update(table : string, data : array, where : string, whereParams : array) : int
+        + delete(table : string, where : string, params : array) : int
+        + count(table : string, where : string, params : array) : int
+        + beginTransaction() : bool
+        + commit() : bool
+        + rollback() : bool
+        + lastInsertId() : string
+        + tableExists(table : string) : bool
+        + getTableStructure(table : string) : array
+        + truncate(table : string)
+        + getDatabaseSize() : int
+        + backup(backupPath : string) : string
+        + restore(backupPath : string) : bool
+        + optimize()
+        + getStats() : array
+        + close()
+        - __clone()
+        - __wakeup()
+        - formatBytes(bytes : int, precision : int) : string
+    }
+    
+    class APIController {
+        --
+        + getAboutImages()
+        + saveAboutImages()
+        + deleteAboutImages()
+        + getGalleryImages()
+        + saveGalleryImages()
+        + deleteGalleryImages()
+        + getHeroImages()
+        + saveHeroImages()
+        + deleteHeroImages()
+    }
+    
+    class BookingController {
+        --
+        + submitBooking(data : array) : array
+        - cleanStr(value : string, max : int) : string
+    }
+    
+    class FeedbackController {
+        --
+        + submitFeedback(data : array) : array
+    }
+}
+
+package "Frontend (JavaScript)" {
+    
+    class TranslationManager {
+        --
+        + tr(key : string) : string
+        + setLanguage(lang : string)
+        + applyTranslationsToElements(elements : NodeList, lang : string)
+    }
+    
+    class NewsManager {
+        --
+        + loadNewsFromStorage() : array
+        + renderSiteNews()
+        + showNewsDetails(index : int)
+        + closeNewsModal()
+    }
+    
+    class GalleryManager {
+        --
+        + loadGalleryFromStorage() : array
+        + loadGalleryImages() : Promise
+        + renderSiteGallery()
+        + loadImagesFromFolder(type : string) : Promise
+    }
+    
+    class PriceManager {
+        --
+        + renderSitePrices()
+        + loadPricesFromStorage() : array
+    }
+    
+    class AboutManager {
+        --
+        + loadAboutFromStorage() : array
+        + updateAboutSection()
+    }
+    
+    class AdminPanel {
+        --
+        + openAdminModal()
+        + closeAdminModal()
+        + saveContent()
+        + loadContent()
+    }
+}
+
+package "Data Layer" {
+    
+    class SQLiteDatabase {
+        --
+        + execute(sql : string)
+        + query(sql : string) : array
+    }
+}
+
+' Отношения между классами
+APIController --> Database : uses
+BookingController --> Database : uses
+FeedbackController --> Database : uses
+
+Database ..> SQLiteDatabase : wraps
+
+TranslationManager --> NewsManager : uses
+TranslationManager --> GalleryManager : uses
+TranslationManager --> PriceManager : uses
+TranslationManager --> AboutManager : uses
+
+AdminPanel --> NewsManager : uses
+AdminPanel --> GalleryManager : uses
+AdminPanel --> PriceManager : uses
+AdminPanel --> AboutManager : uses
+
+NewsManager --> TranslationManager : uses
+GalleryManager --> TranslationManager : uses
+PriceManager --> TranslationManager : uses
+AboutManager --> TranslationManager : uses
+
+@enduml

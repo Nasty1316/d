@@ -1,0 +1,42 @@
+@startuml
+autonumber
+skinparam maxMessageSize 150
+skinparam sequenceMessageAlign center
+
+actor "Клиент" as Client
+participant "get_schedule.php" as PHP
+participant "Файловая система" as FS
+database "schedule.json" as JSON
+
+Client -> PHP: HTTP запрос
+activate PHP
+
+PHP -> PHP: Установить заголовок Content-Type
+PHP -> PHP: Определить путь к директории данных
+PHP -> PHP: Определить данные расписания по умолчанию
+
+PHP -> FS: Проверить, читается ли файл
+activate FS
+FS --> PHP: Результат (true/false)
+deactivate FS
+
+alt Файл читается
+    PHP -> FS: file_get_contents()
+    activate FS
+    FS --> PHP: Содержимое JSON
+    deactivate FS
+
+    PHP -> PHP: json_decode()
+    
+    alt Валидный JSON с массивом 'days'
+        PHP -> Client: JSON ответ (success: true, расписание из файла)
+    else Невалидный JSON или отсутствует 'days'
+        PHP -> Client: JSON ответ (success: true, расписание по умолчанию)
+    end
+else Файл не читается
+    PHP -> Client: JSON ответ (success: true, расписание по умолчанию)
+end
+
+deactivate PHP
+
+@enduml

@@ -1,0 +1,230 @@
+@startuml ER Diagram - Горецкая ДЮСШ
+
+skinparam classAttributeBackgroundColor #F5F5F5
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #333333
+skinparam linkColor #333333
+hide circle
+
+class "users" as users {
+  *id : INTEGER <<PK>>
+  --
+  *username : VARCHAR(50) <<UNIQUE>>
+  *password_hash : VARCHAR(255)
+  email : VARCHAR(100)
+  full_name : VARCHAR(100)
+  role : VARCHAR(20) <<DEFAULT 'admin'>>
+  is_active : BOOLEAN <<DEFAULT 1>>
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+class "news_categories" as news_categories {
+  *id : INTEGER <<PK>>
+  --
+  *name : VARCHAR(50)
+  *slug : VARCHAR(50) <<UNIQUE>>
+  description : TEXT
+  color : VARCHAR(7) <<DEFAULT '#2563eb'>>
+  created_at : DATETIME
+}
+
+class "news" as news {
+  *id : INTEGER <<PK>>
+  --
+  *title : VARCHAR(200)
+  *slug : VARCHAR(200) <<UNIQUE>>
+  *content : TEXT
+  excerpt : TEXT
+  category_id : INTEGER <<FK>>
+  image_url : VARCHAR(255)
+  status : VARCHAR(20) <<DEFAULT 'published'>>
+  view_count : INTEGER <<DEFAULT 0>>
+  is_featured : BOOLEAN <<DEFAULT 0>>
+  published_at : DATETIME
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+class "service_categories" as service_categories {
+  *id : INTEGER <<PK>>
+  --
+  *name : VARCHAR(50)
+  *slug : VARCHAR(50) <<UNIQUE>>
+  description : TEXT
+  icon : VARCHAR(50)
+  order_index : INTEGER <<DEFAULT 0>>
+  is_active : BOOLEAN <<DEFAULT 1>>
+  created_at : DATETIME
+}
+
+class "services" as services {
+  *id : INTEGER <<PK>>
+  --
+  *name : VARCHAR(100)
+  description : TEXT
+  category_id : INTEGER <<FK>>
+  price : DECIMAL(10, 2)
+  duration_minutes : INTEGER
+  image_url : VARCHAR(255)
+  is_active : BOOLEAN <<DEFAULT 1>>
+  order_index : INTEGER <<DEFAULT 0>>
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+class "gallery_albums" as gallery_albums {
+  *id : INTEGER <<PK>>
+  --
+  *name : VARCHAR(100)
+  *slug : VARCHAR(100) <<UNIQUE>>
+  description : TEXT
+  cover_image_url : VARCHAR(255)
+  is_active : BOOLEAN <<DEFAULT 1>>
+  order_index : INTEGER <<DEFAULT 0>>
+  created_at : DATETIME
+}
+
+class "gallery_photos" as gallery_photos {
+  *id : INTEGER <<PK>>
+  --
+  album_id : INTEGER <<FK>>
+  title : VARCHAR(200)
+  description : TEXT
+  *image_url : VARCHAR(255)
+  thumbnail_url : VARCHAR(255)
+  file_size : INTEGER
+  width : INTEGER
+  height : INTEGER
+  order_index : INTEGER <<DEFAULT 0>>
+  is_active : BOOLEAN <<DEFAULT 1>>
+  created_at : DATETIME
+}
+
+class "contacts" as contacts {
+  *id : INTEGER <<PK>>
+  --
+  *type : VARCHAR(50)
+  title : VARCHAR(100)
+  *content : TEXT
+  icon : VARCHAR(50)
+  order_index : INTEGER <<DEFAULT 0>>
+  is_active : BOOLEAN <<DEFAULT 1>>
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+class "management" as management {
+  *id : INTEGER <<PK>>
+  --
+  *full_name : VARCHAR(100)
+  *position : VARCHAR(100)
+  phone : VARCHAR(20)
+  email : VARCHAR(100)
+  photo_url : VARCHAR(255)
+  order_index : INTEGER <<DEFAULT 0>>
+  is_active : BOOLEAN <<DEFAULT 1>>
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+class "bank_details" as bank_details {
+  *id : INTEGER <<PK>>
+  --
+  *bank_name : VARCHAR(100)
+  *account_number : VARCHAR(50)
+  *beneficiary_name : VARCHAR(100)
+  unp : VARCHAR(12)
+  okpo : VARCHAR(10)
+  description : TEXT
+  is_active : BOOLEAN <<DEFAULT 1>>
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+class "settings" as settings {
+  *id : INTEGER <<PK>>
+  --
+  *key : VARCHAR(50) <<UNIQUE>>
+  value : TEXT
+  description : TEXT
+  type : VARCHAR(20) <<DEFAULT 'text'>>
+  is_public : BOOLEAN <<DEFAULT 0>>
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+class "admin_logs" as admin_logs {
+  *id : INTEGER <<PK>>
+  --
+  user_id : INTEGER <<FK>>
+  *action : VARCHAR(50)
+  entity_type : VARCHAR(50)
+  entity_id : INTEGER
+  old_values : TEXT <<JSON>>
+  new_values : TEXT <<JSON>>
+  ip_address : VARCHAR(45)
+  user_agent : TEXT
+  created_at : DATETIME
+}
+
+class "visit_stats" as visit_stats {
+  *id : INTEGER <<PK>>
+  --
+  *date : DATE
+  page_views : INTEGER <<DEFAULT 0>>
+  unique_visitors : INTEGER <<DEFAULT 0>>
+  referrer : VARCHAR(255)
+  user_agent : TEXT
+  ip_address : VARCHAR(45)
+  created_at : DATETIME
+}
+
+class "popular_pages" as popular_pages {
+  *id : INTEGER <<PK>>
+  --
+  *page_url : VARCHAR(255)
+  page_title : VARCHAR(200)
+  view_count : INTEGER <<DEFAULT 0>>
+  last_visited : DATETIME
+  created_at : DATETIME
+  updated_at : DATETIME
+}
+
+class "about_images" as about_images {
+  *id : INTEGER <<PK>>
+  --
+  *name : TEXT
+  *data : TEXT
+  *size : INTEGER
+  *type : TEXT
+  upload_date : DATETIME
+}
+
+class "gallery_images" as gallery_images {
+  *id : INTEGER <<PK>>
+  --
+  *name : TEXT
+  *data : TEXT
+  *size : INTEGER
+  *type : TEXT
+  upload_date : DATETIME
+}
+
+class "hero_images" as hero_images {
+  *id : INTEGER <<PK>>
+  --
+  *name : TEXT
+  *data : TEXT
+  *size : INTEGER
+  *type : TEXT
+  upload_date : DATETIME
+}
+
+' Связи между таблицами
+news }|--|| news_categories : "category_id"
+services }|--|| service_categories : "category_id"
+gallery_photos }|--|{ gallery_albums : "album_id"
+admin_logs }|--|| users : "user_id"
+
+@enduml

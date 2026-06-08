@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест админ панели</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        button { margin: 10px; padding: 10px 20px; cursor: pointer; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+        .modal.active { display: flex; align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 20px; border-radius: 8px; max-width: 500px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-close { background: none; border: none; font-size: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Тест админ панели</h1>
+    
+    <button onclick="openNewsModal()">Открыть новости</button>
+    <button onclick="openAboutModal()">Открыть О нас</button>
+    
+    <div id="newsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Управление новостями</h3>
+                <button class="modal-close" onclick="closeNewsModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Это модальное окно новостей</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Управление разделом "О нас"</h3>
+                <button class="modal-close" onclick="closeAboutModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Это модальное окно "О нас"</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('Загрузка тестовой страницы...');
+        
+        function openNewsModal() {
+            console.log('Вызвана функция openNewsModal');
+            document.getElementById('newsModal').classList.add('active');
+        }
+        
+        function closeNewsModal() {
+            console.log('Вызвана функция closeNewsModal');
+            document.getElementById('newsModal').classList.remove('active');
+        }
+        
+        function openAboutModal() {
+            console.log('Вызвана функция openAboutModal');
+            document.getElementById('aboutModal').classList.add('active');
+        }
+        
+        function closeAboutModal() {
+            console.log('Вызвана функция closeAboutModal');
+            document.getElementById('aboutModal').classList.remove('active');
+        }
+        
+        console.log('Функции определены');
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM загружен');
+        });
+    </script>
+</body>
+</html>

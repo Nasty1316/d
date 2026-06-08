@@ -1,0 +1,83 @@
+@startuml Use Case Diagram - Горецкая ДЮСШ
+
+skinparam packageStyle rectangle
+skinparam linetype ortho
+left to right direction
+
+actor "Посетитель" as visitor
+actor "Зарегистрированный\nпользователь" as registered_user
+actor "Администратор" as admin
+actor "Тренер" as coach
+
+package "Веб-сайт Горецкая ДЮСШ" {
+    
+    usecase "Просмотр главной страницы" as UC1
+    usecase "Просмотр информации о школе" as UC2
+    usecase "Просмотр спортивных объектов" as UC3
+    usecase "Просмотр цен на услуги" as UC4
+    usecase "Просмотр расписания" as UC5
+    usecase "Просмотр новостей" as UC6
+    usecase "Просмотр фотогалереи" as UC7
+    usecase "Просмотр контактов" as UC8
+    usecase "Смена языка" as UC9
+    
+    usecase "Онлайн-запись" as UC10
+    usecase "Просмотр слотов" as UC11
+    usecase "Отмена записи" as UC12
+    usecase "История записей" as UC13
+    
+    usecase "Управление контентом" as UC14
+    usecase "Управление ценами" as UC15
+    usecase "Управление расписанием" as UC16
+    usecase "Управление новостями" as UC17
+    usecase "Управление изображениями" as UC18
+    usecase "Просмотр всех записей" as UC19
+    usecase "Обратная связь" as UC20
+    usecase "Резервное копирование" as UC21
+    
+    usecase "Просмотр расписания тренировок" as UC22
+    usecase "Управление группами" as UC23
+}
+
+' Наследование акторов
+registered_user --|> visitor
+
+' Связи для посетителя
+visitor --> UC1
+visitor --> UC2
+visitor --> UC3
+visitor --> UC4
+visitor --> UC5
+visitor --> UC6
+visitor --> UC7
+visitor --> UC8
+visitor --> UC9
+
+' Связи для зарегистрированного пользователя
+registered_user --> UC10
+registered_user --> UC11
+registered_user --> UC12
+registered_user --> UC13
+
+' Связи для администратора
+admin --> UC14
+admin --> UC15
+admin --> UC16
+admin --> UC17
+admin --> UC18
+admin --> UC19
+admin --> UC20
+admin --> UC21
+
+' Связи для тренера
+coach --> UC22
+coach --> UC23
+
+' Отношения включения
+UC10 ..> UC11 : <<include>>
+UC12 ..> UC13 : <<include>>
+
+' Отношения расширения
+UC5 ..> UC10 : <<extend>>
+
+@enduml

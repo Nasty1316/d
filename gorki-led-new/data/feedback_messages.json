@@ -1,0 +1,29 @@
+[
+    {
+        "id": "c606f8527236b5a0",
+        "name": "Егор",
+        "email": "zaxarchuc566@gmail.com",
+        "phone": "+375259141608",
+        "message": "1123",
+        "created_at": "2026-06-01T16:28:11+02:00",
+        "ip": "::1"
+    },
+    {
+        "id": "179fcd206e864a89",
+        "name": "Егор",
+        "email": "zaxarchuc566@gmail.com",
+        "phone": "+375259141608",
+        "message": "ййцйц",
+        "created_at": "2026-06-02T22:19:40+02:00",
+        "ip": "::1"
+    },
+    {
+        "id": "f821ed1da18cf286",
+        "name": "Егор",
+        "email": "zaxarchuc566@gmail.com",
+        "phone": "+375259141608",
+        "message": "2йцу",
+        "created_at": "2026-06-02T22:26:06+02:00",
+        "ip": "::1"
+    }
+]
